@@ -4,8 +4,8 @@ import { TransactionStatus, TransactionType, Transaction, BankAccount, UserProfi
 export const MOCK_USER: UserProfile = {
   name: 'Alex Johnson',
   phone: '+91 98765 43210',
-  email: 'alex.j@zenithpay.com',
-  upiId: 'alexjohnson@zenithpay',
+  email: 'alex.j@kyanpay.com',
+  upiId: 'alexjohnson@kyanpay',
   avatar: 'https://picsum.photos/seed/alex/200',
   isAdmin: true
 };

@@ -3,7 +3,6 @@ import { GoogleGenAI } from "@google/genai";
 import { Transaction } from "../types.ts";
 
 export const getFinancialAdvice = async (transactions: Transaction[], query: string) => {
-  // Check for API key inside the function to avoid top-level ReferenceErrors
   const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : null;
 
   if (!apiKey) {
@@ -14,12 +13,18 @@ export const getFinancialAdvice = async (transactions: Transaction[], query: str
     const ai = new GoogleGenAI({ apiKey });
     const summary = transactions.map(t => `${t.title}: ₹${t.amount} (${t.category})`).join(', ');
     const prompt = `
-      You are ZenithPay Smart Assistant. Here is the recent transaction history of the user:
+      You are KyanPay Smart Assistant. Your goal is to provide elite financial insights to the user based on their transaction history.
+      
+      Transaction History:
       ${summary}
       
-      User asks: ${query}
+      User Query: ${query}
       
-      Give a concise, helpful, and professional financial response in Indian Rupees (INR). Use markdown. Keep it under 100 words.
+      Response Requirements:
+      - Be professional, modern, and data-driven.
+      - Use Indian Rupee (INR) currency.
+      - Format with markdown (bold, lists).
+      - Keep response under 100 words.
     `;
 
     const response = await ai.models.generateContent({
@@ -30,6 +35,6 @@ export const getFinancialAdvice = async (transactions: Transaction[], query: str
     return response.text;
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "I'm sorry, I'm having trouble analyzing your finances right now. Please try again later.";
+    return "I'm sorry, KyanPay AI is experiencing a network lag. Please try again in a moment.";
   }
 };
