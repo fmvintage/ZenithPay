@@ -1,5 +1,5 @@
 
-import { TransactionStatus, TransactionType, Transaction, BankAccount, UserProfile, SupportTicket } from './types';
+import { TransactionStatus, TransactionType, Transaction, BankAccount, UserProfile, SupportTicket } from './types.ts';
 
 export const MOCK_USER: UserProfile = {
   name: 'Alex Johnson',

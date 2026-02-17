@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
+import { useApp } from '../App.tsx';
 
 const INDIAN_BANKS = [
   { name: 'State Bank of India', code: 'SBI', logo: 'S' },

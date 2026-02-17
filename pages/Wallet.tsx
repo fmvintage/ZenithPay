@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
-import { TransactionType, TransactionStatus } from '../types';
+import { useApp } from '../App.tsx';
+import { TransactionType, TransactionStatus } from '../types.ts';
 
 const Wallet: React.FC = () => {
   const navigate = useNavigate();

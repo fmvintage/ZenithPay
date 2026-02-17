@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useApp } from '../App';
+import { useApp } from '../App.tsx';
 
 const Login: React.FC = () => {
   const { login } = useApp();

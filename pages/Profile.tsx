@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
+import { useApp } from '../App.tsx';
 
 const Profile: React.FC = () => {
   const { user, isDarkMode, toggleDarkMode, logout, bankAccounts } = useApp();

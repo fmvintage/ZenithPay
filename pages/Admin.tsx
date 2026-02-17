@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
-import { MOCK_TICKETS } from '../constants';
+import { useApp } from '../App.tsx';
+import { MOCK_TICKETS } from '../constants.tsx';
 
 const ADMIN_PASSWORD = '245424';
 

@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
-import { TransactionType, TransactionStatus } from '../types';
+import { useApp } from '../App.tsx';
+import { TransactionType, TransactionStatus } from '../types.ts';
 
 const SendMoney: React.FC = () => {
   const navigate = useNavigate();
@@ -21,13 +21,10 @@ const SendMoney: React.FC = () => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        
         osc.frequency.setValueAtTime(100, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 1);
-        
         gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
-        
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
@@ -38,7 +35,7 @@ const SendMoney: React.FC = () => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, startTime); // A5
+        osc.frequency.setValueAtTime(880, startTime);
         gain.gain.setValueAtTime(0.1, startTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.5);
         osc.connect(gain);
@@ -57,7 +54,6 @@ const SendMoney: React.FC = () => {
   useEffect(() => {
     if (step === 'success') {
       playRocketSuccessSound();
-      // After animation completes (roughly 1.5s), show the details
       const timer = setTimeout(() => {
         setShowRocket(false);
       }, 2000);
@@ -120,57 +116,51 @@ const SendMoney: React.FC = () => {
         
         {showRocket ? (
           <div className="relative flex flex-col items-center justify-center h-full">
-            {/* Rocket */}
             <div className="animate-rocket text-blue-600 text-7xl relative z-20">
               <i className="fa-solid fa-rocket"></i>
-              {/* Flames */}
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-1">
                 <div className="w-2 h-6 bg-orange-500 rounded-full animate-pulse"></div>
-                <div className="w-3 h-8 bg-yellow-400 rounded-full animate-pulse delay-75"></div>
+                <div className="w-2 h-8 bg-red-500 rounded-full animate-pulse delay-75"></div>
                 <div className="w-2 h-6 bg-orange-500 rounded-full animate-pulse delay-150"></div>
               </div>
             </div>
-            {/* Cloud/Smoke */}
-            <div className="absolute bottom-10 flex gap-4">
-              <div className="smoke-particle w-12 h-12 bg-slate-200 rounded-full delay-800"></div>
-              <div className="smoke-particle w-16 h-16 bg-slate-100 rounded-full delay-900"></div>
-              <div className="smoke-particle w-10 h-10 bg-slate-200 rounded-full delay-1000"></div>
-            </div>
-            <p className="mt-12 text-blue-600 font-black uppercase tracking-[0.3em] animate-pulse">Launching Payment...</p>
+            {/* Smoke Particles */}
+            {[...Array(6)].map((_, i) => (
+              <div 
+                key={i} 
+                className="smoke-particle absolute bottom-0 bg-slate-200 dark:bg-slate-700 rounded-full blur-xl"
+                style={{
+                  width: `${Math.random() * 40 + 20}px`,
+                  height: `${Math.random() * 40 + 20}px`,
+                  left: `${Math.random() * 100 - 50}%`,
+                  animationDelay: `${Math.random() * 0.5}s`
+                }}
+              ></div>
+            ))}
           </div>
         ) : (
-          <div className="fade-in-up w-full flex flex-col items-center">
-            <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 shadow-sm">
-              <i className="fa-solid fa-check text-5xl"></i>
+          <div className="fade-in-up">
+            <div className="w-24 h-24 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i className="fa-solid fa-check text-4xl"></i>
             </div>
-
-            <h2 className="text-3xl font-bold mb-2 text-blue-600">Payment Successful</h2>
-            <p className="text-slate-500 mb-8 text-sm">Successfully sent to {recipient}</p>
-            
-            <div className="w-full bg-blue-50 dark:bg-slate-800/50 p-6 rounded-[32px] mb-12 border border-blue-100 dark:border-slate-700 shadow-sm">
-              <div className="flex justify-between mb-3 text-sm">
-                <span className="text-blue-400 font-bold uppercase tracking-wider text-[10px]">Amount Sent</span>
-                <span className="font-black text-blue-900 dark:text-blue-100 text-lg">₹{parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="flex justify-between mb-3 text-sm">
-                <span className="text-slate-400 font-medium">Recipient</span>
-                <span className="font-bold text-slate-900 dark:text-white">{recipient}</span>
+            <h2 className="text-3xl font-bold mb-2">Payment Successful</h2>
+            <p className="text-slate-500 mb-8">₹{amount} sent to {recipient}</p>
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-3xl mb-8 border border-slate-100 dark:border-slate-700">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-slate-400">Transaction ID</span>
+                <span className="font-mono font-bold">ZNP884210</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400 font-medium">Transaction ID</span>
-                <span className="font-mono text-xs text-slate-500">ZENITH{Math.random().toString(36).substring(7).toUpperCase()}</span>
+                <span className="text-slate-400">Time</span>
+                <span className="font-bold">{new Date().toLocaleTimeString()}</span>
               </div>
             </div>
-
-            <div className="w-full space-y-4">
-              <button 
-                onClick={() => navigate('/')}
-                className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-200 transition-all active:scale-95"
-              >
-                Done
-              </button>
-              <button className="text-blue-600 font-bold text-sm">View Details</button>
-            </div>
+            <button 
+              onClick={() => navigate('/')}
+              className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
+            >
+              Back to Home
+            </button>
           </div>
         )}
       </div>
@@ -186,83 +176,74 @@ const SendMoney: React.FC = () => {
         <h2 className="text-xl font-bold">Send Money</h2>
       </div>
 
-      {step === 'details' ? (
-        <form onSubmit={handleSubmit} className="space-y-6 flex-1">
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Recipient UPI ID or Name</label>
-            <input
-              type="text"
-              placeholder="e.g. zenith@upi"
-              className="w-full p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
-              value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Amount</label>
-            <div className="relative">
-              <span className="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-bold text-slate-400">₹</span>
+      <div className="bg-white dark:bg-slate-800 rounded-[32px] p-8 shadow-sm border border-slate-100 dark:border-slate-700">
+        {step === 'details' ? (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block">Recipient Name / UPI ID</label>
               <input
-                type="number"
-                placeholder="0.00"
-                className="w-full pl-12 pr-4 py-8 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl text-4xl font-bold focus:ring-2 focus:ring-blue-500 outline-none text-center shadow-sm"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                type="text"
+                placeholder="Name, Phone or UPI ID"
+                className="w-full p-4 bg-slate-100 dark:bg-slate-700 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 outline-none font-bold"
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
                 required
               />
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Note (Optional)</label>
-            <input
-              type="text"
-              placeholder="What's this for?"
-              className="w-full p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            />
-          </div>
-
-          <div className="pt-8">
+            <div>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block">Amount</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-slate-400">₹</span>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  className="w-full pl-10 pr-4 py-4 bg-slate-100 dark:bg-slate-700 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 outline-none font-bold text-2xl"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block">Add a Note (Optional)</label>
+              <input
+                type="text"
+                placeholder="What's this for?"
+                className="w-full p-4 bg-slate-100 dark:bg-slate-700 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 outline-none"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </div>
             <button
               type="submit"
-              className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-100 active:scale-95 transition-transform"
+              className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all mt-4"
             >
-              Verify & Proceed
+              Proceed to Pay
             </button>
+          </form>
+        ) : (
+          <div className="text-center py-4">
+            <h3 className="text-xl font-bold mb-2">Secure PIN</h3>
+            <p className="text-slate-400 text-sm mb-8">Enter your 4-digit ZenithPay PIN to authorize payment of ₹{amount}</p>
+            <div className="flex justify-center gap-4 mb-12">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+              ))}
+            </div>
+            <div className="grid grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '✓'].map((key, i) => (
+                <button
+                  key={i}
+                  onClick={() => key === '✓' ? handlePinSubmit() : null}
+                  className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition-all active:bg-blue-600 active:text-white"
+                >
+                  {key}
+                </button>
+              ))}
+            </div>
           </div>
-        </form>
-      ) : (
-        <div className="space-y-8 flex-1 flex flex-col items-center pt-12">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2">Enter Secure PIN</h3>
-            <p className="text-slate-500 text-sm">Please enter your 4-digit ZenithPay PIN</p>
-          </div>
-
-          <div className="flex gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-100 dark:border-slate-700 shadow-sm">
-                <div className="w-3 h-3 bg-slate-300 rounded-full"></div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-3 gap-8 w-full px-8 max-w-[300px]">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '✓'].map((key, i) => (
-              <button 
-                key={i} 
-                onClick={() => key === '✓' ? handlePinSubmit() : null}
-                className={`w-16 h-16 text-2xl font-bold ${key === '✓' ? 'text-green-600' : 'text-slate-700 dark:text-white'} flex items-center justify-center rounded-full hover:bg-slate-100 active:bg-blue-100 transition-colors`}
-              >
-                {key}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
