@@ -1,11 +1,11 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { Transaction } from "../types";
-
-// Safety check for API key
-const apiKey = process.env.API_KEY;
+import { Transaction } from "../types.ts";
 
 export const getFinancialAdvice = async (transactions: Transaction[], query: string) => {
+  // Check for API key inside the function to avoid top-level ReferenceErrors
+  const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : null;
+
   if (!apiKey) {
     return "AI Insights are currently unavailable (Missing API Key). Please configure your environment.";
   }

@@ -1,19 +1,19 @@
 
 import React, { useState, createContext, useContext } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import History from './pages/History';
-import Profile from './pages/Profile';
-import Rewards from './pages/Rewards';
-import SendMoney from './pages/SendMoney';
-import ScanPay from './pages/ScanPay';
-import Wallet from './pages/Wallet';
-import Admin from './pages/Admin';
-import Bills from './pages/Bills';
-import AddBank from './pages/AddBank';
-import { MOCK_USER, MOCK_TRANSACTIONS } from './constants';
-import { Transaction, BankAccount, UserProfile } from './types';
+import Home from './pages/Home.tsx';
+import Login from './pages/Login.tsx';
+import History from './pages/History.tsx';
+import Profile from './pages/Profile.tsx';
+import Rewards from './pages/Rewards.tsx';
+import SendMoney from './pages/SendMoney.tsx';
+import ScanPay from './pages/ScanPay.tsx';
+import Wallet from './pages/Wallet.tsx';
+import Admin from './pages/Admin.tsx';
+import Bills from './pages/Bills.tsx';
+import AddBank from './pages/AddBank.tsx';
+import { MOCK_USER, MOCK_TRANSACTIONS } from './constants.tsx';
+import { Transaction, BankAccount, UserProfile } from './types.ts';
 
 interface AppContextType {
   user: UserProfile;
@@ -46,7 +46,7 @@ const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [user, setUser] = useState<UserProfile>(MOCK_USER);
   const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS);
-  const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]); // Initially empty
+  const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
   const [walletBalance, setWalletBalance] = useState<number>(500.00);
   
   const isBankLinked = bankAccounts.length > 0;
@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    setBankAccounts([]); // Clear banks on logout for security demo
+    setBankAccounts([]);
   };
   
   const addTransaction = (t: Transaction) => {
@@ -133,7 +133,6 @@ const BottomNav: React.FC = () => {
 
   return (
     <div className="fixed bottom-0 max-w-md w-full z-50">
-      {/* Scanner FAB */}
       <div className="absolute left-1/2 -top-8 -translate-x-1/2 flex flex-col items-center">
         <button 
           onClick={() => navigate('/scan')}

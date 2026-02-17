@@ -8,7 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Shim for process.env to prevent JS crashes in browser -->
   <script>
     window.process = { env: { API_KEY: "" } };
   </script>
@@ -20,28 +19,6 @@
       background-color: #f8fafc;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
-    }
-    .safe-bottom {
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    /* Minimal non-blocking loader */
-    #root:empty::before {
-      content: "";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 40px;
-      height: 40px;
-      margin: -20px 0 0 -20px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #2563eb;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
   </style>
 
@@ -61,21 +38,6 @@
 </head>
 <body class="bg-slate-50">
   <div id="root"></div>
-  
-  <!-- Load the main entry point -->
   <script type="module" src="./index.tsx"></script>
-
-  <!-- Error logging helper -->
-  <script type="module">
-    window.onerror = function(msg, url, lineNo, columnNo, error) {
-      console.error('ZenithPay Load Error: ', msg, url, lineNo, columnNo, error);
-      // If there is an error, we can optionally show a message on the UI
-      const root = document.getElementById('root');
-      if (root && root.innerHTML === '') {
-        root.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444; font-weight: bold;">Oops! Something went wrong while loading the app. Please refresh.</div>';
-      }
-      return false;
-    };
-  </script>
 </body>
 </html>
