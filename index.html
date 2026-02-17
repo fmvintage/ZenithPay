@@ -7,6 +7,12 @@
   <title>ZenithPay - Secure Payments</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Shim for process.env to prevent JS crashes in browser -->
+  <script>
+    window.process = { env: { API_KEY: "" } };
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body {
@@ -27,6 +33,12 @@
       height: 100vh;
       background: #2563eb;
       color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
     }
     .spinner {
       width: 40px;
@@ -41,6 +53,7 @@
       to { transform: rotate(360deg); }
     }
   </style>
+
 <script type="importmap">
 {
   "imports": {
@@ -57,14 +70,23 @@
 </head>
 <body class="bg-slate-50">
   <div id="root">
-    <!-- Initial Loading State -->
+    <!-- This loader will be automatically removed by React when it mounts -->
     <div id="loader">
       <div class="spinner"></div>
-      <h1 style="font-weight: bold; font-size: 1.5rem;">ZenithPay</h1>
-      <p style="opacity: 0.8; font-size: 0.8rem;">Securely initializing...</p>
+      <h1 style="font-weight: bold; font-size: 1.5rem; letter-spacing: -0.025em;">ZenithPay</h1>
+      <p style="opacity: 0.8; font-size: 0.8rem; margin-top: 4px;">Securely initializing...</p>
     </div>
   </div>
-  <!-- Explicitly load the entry point -->
+  
+  <!-- Load the main entry point -->
   <script type="module" src="./index.tsx"></script>
+
+  <!-- Error logging helper -->
+  <script type="module">
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+      console.error('ZenithPay Load Error: ', msg, url, lineNo, columnNo, error);
+      return false;
+    };
+  </script>
 </body>
 </html>
